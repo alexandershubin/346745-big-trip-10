@@ -1,3 +1,4 @@
+'use strict';
 const CARD__COUNT = 3;
 
 const createMenuTemplate = () => {
@@ -32,7 +33,7 @@ const createFiltersTemplate = () => {
   );
 };
 
-const createCardTemplate =() => {
+const createCardTemplate = () => {
   return (
     `<li class="trip-days__item  day">
       <div class="day__info">
