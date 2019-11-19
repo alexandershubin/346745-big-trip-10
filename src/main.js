@@ -386,24 +386,29 @@ const createInfoAboutWayTemplate = () => {
   );
 };
 
+// функция для вставки блоков в index
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
+// вставляю меню и фильтр
 const siteMenuElement = document.querySelector(`.trip-controls`);
 const siteFilterElement = document.querySelector(`.trip-events`);
 
 render(siteMenuElement, createMenuTemplate(), `beforeend`);
 render(siteMenuElement, createFiltersTemplate(), `beforeend`);
 
+// Форма создания и изменения
 const siteFormChangeElements = document.querySelector(`.trip-events`);
 render(siteFormChangeElements, createNewEventFormsTemplate(), `beforeend`);
 
+// карточки
 new Array(CARD__COUNT)
 .fill(``)
 .forEach(
     () => render(siteFilterElement, createCardTemplate(), `beforeend`)
 );
 
+// тнформация о маршруте
 const siteInfoWayElement = document.querySelector(`.trip-main`);
 render(siteInfoWayElement, createInfoAboutWayTemplate(), `afterbegin`);
