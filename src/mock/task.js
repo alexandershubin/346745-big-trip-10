@@ -38,6 +38,10 @@ const DescriptionText = [
   `Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`
 ];
 
+const getRandomText = () => {
+  return DescriptionText.slice(0, getRandomIntegerNumber(0, 2));
+};
+
 const getPictureLoad = () => {
   return `http://picsum.photos/300/150?r=${Math.random()}`;
 };
