@@ -12,7 +12,7 @@ const TypePointWay = [
   `trip`,
 ];
 
-const TypePIconWay = {
+export const TypeIconWay = {
   'bus': `./img/icons/bus.png`,
   'check-in': `./img/icons/check-in.png`,
   'drive': `./img/icons/drive.png`,
@@ -46,7 +46,7 @@ const getPictureLoad = () => {
   return `http://picsum.photos/300/150?r=${Math.random()}`;
 };
 
-const MoreOptions = [
+export const MoreOptions = [
   {
     type: `luggage`,
     name: `Add luggage`,
@@ -83,6 +83,12 @@ const TimeFinished = [
   18.00,
 ];
 
+const generateRandomOptions = (option) => {
+  return option
+  .filter(() => Math.random() > 0.5)
+  .slice(0, 2);
+};
+
 const getRandomArrayItem = (array) => {
   const randomIndex = getRandomIntegerNumber(0, array.length);
 
@@ -110,6 +116,8 @@ const generateTask = () => {
   return {
     dueDate,
     cites: getRandomArrayItem(Cites),
+    description: getRandomText(),
+    options: generateRandomOptions(),
   };
 };
 
@@ -118,3 +126,6 @@ const generateTasks = (count) => {
   .fill(``)
   .map(generateTask);
 };
+
+export {generateTask, generateTasks};
+

@@ -1,3 +1,6 @@
+import {MoreOptions, TypeIconWay} from "../mock/task";
+
+
 export const createCardTemplate = () => {
   return (
     `<li class="trip-days__item  day">
