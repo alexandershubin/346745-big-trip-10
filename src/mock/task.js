@@ -102,3 +102,19 @@ const getRandomDate = () => {
 
   return targetDate;
 };
+
+
+const generateTask = () => {
+  const dueDate = Math.random() > 0.5 ? null : getRandomDate();
+
+  return {
+    dueDate,
+    cites: getRandomArrayItem(Cites),
+  };
+};
+
+const generateTasks = (count) => {
+  return new Array(count)
+  .fill(``)
+  .map(generateTask);
+};
