@@ -7,10 +7,9 @@ const getRandomText = () => {
 
   while (result.length < 3) {
     result.push(
-        sentences.splice(getRandomIntegerNumber(0, sentences.length))
+        sentences[getRandomIntegerNumber(0, sentences.length)]
     );
   }
-
   return result.join(` `);
 };
 
@@ -38,6 +37,8 @@ const sum = renderTwoOption.reduce((accumulator, currentValue) => {
   return accumulator + currentValue.price;
 }, 0);
 
+const getRandomOption = () => MoreOptions[getRandomIntegerNumber(0, MoreOptions.length)];
+
 // дата;
 const getRandomDate = (start, end) => {
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
@@ -59,6 +60,7 @@ const generateCard = () => {
     trans: getNumberTransfer(),
     active: getNumberActive(),
     offer: sum,
+    option: getRandomOption(),
   };
 };
 
