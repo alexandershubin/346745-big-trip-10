@@ -24,9 +24,8 @@ render(siteMenuElement, createMenuTemplate(menus), `beforeend`);
 render(siteMenuElement, createFiltersTemplate(filters), `beforeend`);
 
 // Форма создания и изменения
-const event = generateCards();
 const siteFormChangeElements = document.querySelector(`.trip-events`);
-render(siteFormChangeElements, createNewEventFormsTemplate(event), `beforeend`);
+render(siteFormChangeElements, createNewEventFormsTemplate(), `beforeend`);
 
 // карточки
 const cards = generateCards(CARD__COUNT);
