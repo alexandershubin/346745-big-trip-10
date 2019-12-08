@@ -1,4 +1,4 @@
-import {DescriptionText, TypePointWay, Cites} from "../const";
+import {DescriptionText, TypePointWay, Cites, Transfers, Activities, MoreOptions} from "../const";
 import {getRandomIntegerNumber} from "../utils";
 
 const getRandomText = () => {
@@ -16,19 +16,27 @@ const getRandomText = () => {
 
 const getRandomType = () => TypePointWay[getRandomIntegerNumber(0, TypePointWay.length)];
 
+const getNumberActive = () => {
+  return Activities.join(`\n`);
+};
+
+const getNumberTransfer = () => {
+  return Transfers.join(`\n`);
+};
+
 // получение городов
 const getRandomCites = () => Cites[getRandomIntegerNumber(0, Cites.length)];
 
 // фото
-const getPictureLoad = (item) => {
-  const picture = `http://picsum.photos/300/150?r=${Math.random()}`;
-  const photoArr = [];
-  const picArr = picture[getRandomIntegerNumber(0, 9)];
-  for (let i = 0; i < picArr.length; i++) {
-    photoArr.push(item);
-  }
-  return photoArr;
+const getPictureLoad = () => {
+  return `http://picsum.photos/300/150?r=${Math.random()}`;
 };
+
+// offer
+export let renderTwoOption = MoreOptions.slice(0, 2);
+const sum = renderTwoOption.reduce((accumulator, currentValue) => {
+  return accumulator + currentValue.price;
+}, 0);
 
 // дата;
 const getRandomDate = (start, end) => {
@@ -48,6 +56,9 @@ const generateCard = () => {
     description: getRandomText(),
     start,
     end,
+    trans: getNumberTransfer(),
+    active: getNumberActive(),
+    offer: sum,
   };
 };
 

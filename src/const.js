@@ -12,6 +12,22 @@ export const TypePointWay = [
   `trip`,
 ];
 
+export const Transfers = [
+  `bus`,
+  `drive`,
+  `flight`,
+  `ship`,
+  `taxi`,
+  `train`,
+  `transport`,
+];
+
+export const Activities = [
+  `check-in`,
+  `restaurant`,
+  `sightseeing`
+];
+
 export const Cites = [
   `Amsterdam`,
   `Geneva`,

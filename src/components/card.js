@@ -1,4 +1,4 @@
-import {MoreOptions} from "../const";
+import {renderTwoOption} from "../mock/card";
 import {castTimeFormat} from "../utils";
 
 export const createCardTemplate = (cards) => {
@@ -40,12 +40,6 @@ const renderCard = (card) => {
 
   const diffTime = (end.getTime() - start.getTime());
   const diff = getTimeDiffString(diffTime);
-  // разделяем  и отсавляем по два предложения в точках
-  let renderTwoOption = MoreOptions.slice(0, 2);
-
-  const sum = renderTwoOption.reduce((accumulator, currentValue) => {
-    return accumulator + currentValue.price;
-  }, 0);
 
   return (`
     <li class="trip-events__item">
@@ -63,7 +57,7 @@ const renderCard = (card) => {
         </div>
   
         <p class="event__price">
-          €&nbsp;<span class="event__price-value">${sum}</span>
+          €&nbsp;<span class="event__price-value">${card.offer}</span>
         </p>
   
         <h4 class="visually-hidden">Offers:</h4>
