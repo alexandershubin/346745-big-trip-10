@@ -12,7 +12,6 @@ module.exports = {
   devServer: {
     // eslint-disable-next-line no-undef
     contentBase: path.join(__dirname, `public`),
-    publicPath: `http://localhost:8080/`,
     compress: true,
     watchContentBase: true
   }

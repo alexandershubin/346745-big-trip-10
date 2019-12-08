@@ -1,157 +1,87 @@
-export const createCardTemplate = () => {
+import {renderTwoOption} from "../mock/card";
+import {castTimeFormat} from "../utils";
+
+export const createCardTemplate = (cards) => {
   return (
     `<li class="trip-days__item  day">
       <div class="day__info">
         <span class="day__counter">1</span>
         <time class="day__date" datetime="2019-03-18">MAR 18</time>
       </div>
-
+      
       <ul class="trip-events__list">
-        <li class="trip-events__item">
-          <div class="event">
-            <div class="event__type">
-              <img class="event__type-icon" width="42" height="42" src="img/icons/taxi.png" alt="Event type icon">
-            </div>
-            <h3 class="event__title">Taxi to airport</h3>
-
-            <div class="event__schedule">
-              <p class="event__time">
-                <time class="event__start-time" datetime="2019-03-18T10:30">10:30</time>
-                —
-                <time class="event__end-time" datetime="2019-03-18T11:00">11:00</time>
-              </p>
-              <p class="event__duration">1H 30M</p>
-            </div>
-
-            <p class="event__price">
-              €&nbsp;<span class="event__price-value">20</span>
-            </p>
-
-            <h4 class="visually-hidden">Offers:</h4>
-            <ul class="event__selected-offers">
-              <li class="event__offer">
-                <span class="event__offer-title">Order Uber</span>
-                +
-                €&nbsp;<span class="event__offer-price">20</span>
-               </li>
-            </ul>
-
-            <button class="event__rollup-btn" type="button">
-              <span class="visually-hidden">Open event</span>
-            </button>
-          </div>
-        </li>
-
-        <li class="trip-events__item">
-          <div class="event">
-            <div class="event__type">
-              <img class="event__type-icon" width="42" height="42" src="img/icons/flight.png" alt="Event type icon">
-            </div>
-            <h3 class="event__title">Flight to Geneva</h3>
-
-            <div class="event__schedule">
-              <p class="event__time">
-                <time class="event__start-time" datetime="2019-03-18T12:25">12:25</time>
-                —
-                <time class="event__end-time" datetime="2019-03-18T13:35">13:35</time>
-              </p>
-              <p class="event__duration">1H 30M</p>
-            </div>
-
-            <p class="event__price">
-              €&nbsp;<span class="event__price-value">160</span>
-            </p>
-
-            <h4 class="visually-hidden">Offers:</h4>
-            <ul class="event__selected-offers">
-              <li class="event__offer">
-                <span class="event__offer-title">Add luggage</span>
-                +
-                €&nbsp;<span class="event__offer-price">50</span>
-               </li>
-               <li class="event__offer">
-                 <span class="event__offer-title">Switch to comfort</span>
-                 +
-                 €&nbsp;<span class="event__offer-price">80</span>
-                </li>
-            </ul>
-
-            <button class="event__rollup-btn" type="button">
-              <span class="visually-hidden">Open event</span>
-            </button>
-          </div>
-        </li>
-
-        <li class="trip-events__item">
-          <div class="event">
-            <div class="event__type">
-              <img class="event__type-icon" width="42" height="42" src="img/icons/drive.png" alt="Event type icon">
-            </div>
-            <h3 class="event__title">Drive to Chamonix</h3>
-
-            <div class="event__schedule">
-              <p class="event__time">
-                <time class="event__start-time" datetime="2019-03-18T14:30">14:30</time>
-                —
-                <time class="event__end-time" datetime="2019-03-18T16:05">16:05</time>
-              </p>
-              <p class="event__duration">1H 10M</p>
-            </div>
-
-            <p class="event__price">
-              €&nbsp;<span class="event__price-value">160</span>
-            </p>
-
-            <h4 class="visually-hidden">Offers:</h4>
-            <ul class="event__selected-offers">
-              <li class="event__offer">
-                <span class="event__offer-title">Rent a car</span>
-                +
-                €&nbsp;<span class="event__offer-price">200</span>
-               </li>
-            </ul>
-
-            <button class="event__rollup-btn" type="button">
-              <span class="visually-hidden">Open event</span>
-            </button>
-          </div>
-        </li>
-
-        <li class="trip-events__item">
-          <div class="event">
-            <div class="event__type">
-              <img class="event__type-icon" width="42" height="42" src="img/icons/check-in.png" alt="Event type icon">
-            </div>
-            <h3 class="event__title">Check into hotel</h3>
-
-            <div class="event__schedule">
-              <p class="event__time">
-                <time class="event__start-time" datetime="2019-03-18T12:25">12:25</time>
-                —
-                <time class="event__end-time" datetime="2019-03-18T13:35">13:35</time>
-              </p>
-              <p class="event__duration">1H 30M</p>
-            </div>
-
-            <p class="event__price">
-              €&nbsp;<span class="event__price-value">600</span>
-            </p>
-
-            <h4 class="visually-hidden">Offers:</h4>
-            <ul class="event__selected-offers">
-              <li class="event__offer">
-                <span class="event__offer-title">Add breakfast</span>
-                +
-                €&nbsp;<span class="event__offer-price">50</span>
-               </li>
-            </ul>
-
-            <button class="event__rollup-btn" type="button">
-              <span class="visually-hidden">Open event</span>
-            </button>
-          </div>
-        </li>
+        ${cards.map(renderCard).join(``)}
       </ul>
     </li>`
   );
+};
+
+const getTimeDiffString = (time) => {
+  let hours = new Date(time).getUTCHours();
+  let minutes = new Date(time).getUTCMinutes();
+
+  hours = castTimeFormat(hours);
+  minutes = castTimeFormat(minutes);
+  return `${hours}H ${minutes}M `;
+};
+
+const getPointTimeMarkup = (start, end) => {
+  const startTime = `${castTimeFormat(start.getHours())}:${castTimeFormat(start.getMinutes())}`;
+  const finishTime = `${castTimeFormat(end.getHours())}:${castTimeFormat(end.getMinutes())}`;
+  return `
+      <time class="event__start-time" datetime="${start}">${startTime}</time>
+        &mdash;
+        <time class="event__end-time" datetime="${end}">${finishTime}</time>`;
+};
+
+const renderCard = (card) => {
+  const {start, end} = card;
+  const pointTimeMarkup = getPointTimeMarkup(start, end);
+
+  const diffTime = (end.getTime() - start.getTime());
+  const diff = getTimeDiffString(diffTime);
+
+  return (`
+    <li class="trip-events__item">
+      <div class="event">
+        <div class="event__type">
+          <img class="event__type-icon" width="42" height="42" src="img/icons/${card.type}.png" alt="Event type icon">
+        </div>
+        <h3 class="event__title">${card.type} to ${card.cites} </h3>
+  
+        <div class="event__schedule">
+          <p class="event__time">
+          ${pointTimeMarkup}
+          </p>
+          <p class="event__duration">${diff}</p>
+        </div>
+  
+        <p class="event__price">
+          €&nbsp;<span class="event__price-value">${card.offer}</span>
+        </p>
+  
+        <h4 class="visually-hidden">Offers:</h4>
+        <ul class="event__selected-offers">
+        ${renderTwoOption.map((option) => `
+          <li class="event__offer">
+            <span class="event__offer-title">${option.name}</span>
+            &plus;
+            &euro;&nbsp;<span class="event__offer-price">${option.price}</span>
+          </li>
+          `).join(` `)}
+        </ul>
+  
+        ${renderButton()}
+      </div>
+    </li>
+  `);
+};
+
+
+const renderButton = () => {
+  return (`
+    <button class="event__rollup-btn" type="button">
+      <span class="visually-hidden">Open event</span>
+    </button>
+  `);
 };
