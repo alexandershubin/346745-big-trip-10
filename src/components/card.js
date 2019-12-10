@@ -1,7 +1,8 @@
 import {renderTwoOption} from "../mock/card";
-import {castTimeFormat} from "../utils";
+import {castTimeFormat, createElement} from "../utils";
 
-export const createCardTemplate = (cards) => {
+
+const createCardTemplate = (cards) => {
   return (
     `<li class="trip-days__item  day">
       <div class="day__info">
@@ -85,3 +86,27 @@ const renderButton = () => {
     </button>
   `);
 };
+
+export default class Card {
+  constructor(card) {
+    this._card = card;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createCardTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
