@@ -14,9 +14,11 @@ const renderCard = (card) => {
   const cardComponent = new CardComponent(card);
   const newEventFormsComponent = new NewEventFormsComponent(card);
 
-  const arrowButton = cardComponent.getElement().querySelector(`.event__rollup-btn`);
-  arrowButton.addEventListener(`click`, () => {
-    siteFilterElement.replaceChild(newEventFormsComponent.getElement(), cardComponent.getElement());
+  const arrowButton = cardComponent.getElement().querySelectorAll(`.event__rollup-btn`);
+  arrowButton.forEach((it) => {
+    it.addEventListener(`click`, () => {
+      siteFilterElement.replaceChild(newEventFormsComponent.getElement(), cardComponent.getElement());
+    });
   });
 
   render(siteFilterElement, cardComponent.getElement(), RenderPosition.BEFOREEND);
@@ -36,7 +38,7 @@ const cards = generateCards(CARD__COUNT);
 new Array(CARD__COUNT)
 .fill(``)
 .forEach(
-    () => renderCard(cards)
+  () => renderCard(cards)
 );
 
 // информация о маршруте
