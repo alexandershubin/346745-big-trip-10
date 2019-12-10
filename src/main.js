@@ -11,20 +11,35 @@ import {render, RenderPosition} from "./utils";
 const CARD__COUNT = 4;
 
 const renderCard = (card) => {
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      replaceEditToCard();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  const replaceEditToCard = () => {
+    siteFilterElement.replaceChild(cardComponent.getElement(), newEventFormsComponent.getElement());
+  };
+
+  const replaceCardToEdit = () => {
+    siteFilterElement.replaceChild(newEventFormsComponent.getElement(), cardComponent.getElement());
+  };
 
   const cardComponent = new CardComponent(card);
   const newEventFormsComponent = new NewEventFormsComponent(card);
 
   const arrowButton = cardComponent.getElement().querySelector(`.event__rollup-btn`);
   arrowButton.addEventListener(`click`, () => {
-    siteFilterElement.replaceChild(newEventFormsComponent.getElement(), cardComponent.getElement());
+    replaceCardToEdit();
+    document.addEventListener(`keydown`, onEscKeyDown);
   });
 
   const editForm = newEventFormsComponent.getElement().querySelector(`form`);
   if (editForm) {
-    editForm.addEventListener(`submit`, () => {
-      siteFilterElement.replaceChild(cardComponent.getElement(), newEventFormsComponent.getElement());
-    });
+    editForm.addEventListener(`submit`, replaceEditToCard);
   }
 
   render(siteFilterElement, cardComponent.getElement(), RenderPosition.BEFOREEND);
