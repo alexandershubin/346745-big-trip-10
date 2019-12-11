@@ -1,17 +1,50 @@
-import {createCardTemplate} from "./components/card";
-import {createFiltersTemplate} from "./components/filter";
-import {createInfoAboutWayTemplate} from "./components/info-way";
-import {createMenuTemplate} from "./components/site-menu";
-import {createNewEventFormsTemplate} from "./components/form-edit";
+import CardComponent from "./components/card";
+import FilterComponent from "./components/filter.js";
+import InfoAboutWayComponent from "./components/info-way";
+import MenuComponent from "./components/site-menu";
+import NewEventFormsComponent from "./components/form-edit";
 import {generateCards} from "./mock/card";
 import {generateFilters} from "./mock/filter";
 import {generateMenu} from "./mock/site-menu";
+import {render, RenderPosition} from "./utils";
 
 const CARD__COUNT = 4;
 
-// функция для вставки блоков в index
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
+const renderCard = (card) => {
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      replaceEditToCard();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  const replaceEditToCard = () => {
+    siteFilterElement.replaceChild(cardComponent.getElement(), newEventFormsComponent.getElement());
+  };
+
+  const replaceCardToEdit = () => {
+    siteFilterElement.replaceChild(newEventFormsComponent.getElement(), cardComponent.getElement());
+  };
+
+  const cardComponent = new CardComponent(card);
+  const newEventFormsComponent = new NewEventFormsComponent(card);
+
+  const arrowButton = cardComponent.getElement().querySelectorAll(`.event__rollup-btn`);
+  arrowButton.forEach((it) => {
+    it.addEventListener(`click`, () => {
+      replaceCardToEdit();
+      document.addEventListener(`keydown`, onEscKeyDown);
+    });
+  });
+
+  const editForm = newEventFormsComponent.getElement().querySelector(`form`);
+  if (editForm) {
+    editForm.addEventListener(`submit`, replaceEditToCard);
+  }
+
+  render(siteFilterElement, cardComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
 // вставляю меню и фильтр
@@ -20,21 +53,17 @@ const siteFilterElement = document.querySelector(`.trip-events`);
 
 const menus = generateMenu();
 const filters = generateFilters();
-render(siteMenuElement, createMenuTemplate(menus), `beforeend`);
-render(siteMenuElement, createFiltersTemplate(filters), `beforeend`);
-
-// Форма создания и изменения
-const siteFormChangeElements = document.querySelector(`.trip-events`);
-render(siteFormChangeElements, createNewEventFormsTemplate(), `beforeend`);
+render(siteMenuElement, new MenuComponent(menus).getElement(), RenderPosition.BEFOREEND);
+render(siteMenuElement, new FilterComponent(filters).getElement(), RenderPosition.BEFOREEND);
 
 // карточки
 const cards = generateCards(CARD__COUNT);
 new Array(CARD__COUNT)
 .fill(``)
 .forEach(
-    () => render(siteFilterElement, createCardTemplate(cards), `beforeend`)
+  () => renderCard(cards)
 );
 
 // информация о маршруте
 const siteInfoWayElement = document.querySelector(`.trip-main`);
-render(siteInfoWayElement, createInfoAboutWayTemplate(), `afterbegin`);
+render(siteInfoWayElement, new InfoAboutWayComponent().getElement(), RenderPosition.AFTERBEGIN);
