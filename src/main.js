@@ -9,7 +9,7 @@ import {generateFilters} from "./mock/filter";
 import {generateMenu} from "./mock/site-menu";
 import {render, RenderPosition} from "./utils";
 
-const CARD__COUNT = 0;
+const CARD__COUNT = 4;
 
 const renderCard = (card) => {
   const onEscKeyDown = (evt) => {
