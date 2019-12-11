@@ -3,12 +3,13 @@ import FilterComponent from "./components/filter.js";
 import InfoAboutWayComponent from "./components/info-way";
 import MenuComponent from "./components/site-menu";
 import NewEventFormsComponent from "./components/form-edit";
+import PointComponent from "./components/points";
 import {generateCards} from "./mock/card";
 import {generateFilters} from "./mock/filter";
 import {generateMenu} from "./mock/site-menu";
 import {render, RenderPosition} from "./utils";
 
-const CARD__COUNT = 4;
+const CARD__COUNT = 0;
 
 const renderCard = (card) => {
   const onEscKeyDown = (evt) => {
@@ -56,14 +57,21 @@ const filters = generateFilters();
 render(siteMenuElement, new MenuComponent(menus).getElement(), RenderPosition.BEFOREEND);
 render(siteMenuElement, new FilterComponent(filters).getElement(), RenderPosition.BEFOREEND);
 
-// карточки
 const cards = generateCards(CARD__COUNT);
+const generatePoint = () => {
+  render(siteFilterElement, new PointComponent().getElement(), RenderPosition.BEFOREEND);
+};
+if (CARD__COUNT === 0) {
+  generatePoint();
+}
+// карточки
 new Array(CARD__COUNT)
 .fill(``)
 .forEach(
-  () => renderCard(cards)
+    () => renderCard(cards)
 );
 
 // информация о маршруте
 const siteInfoWayElement = document.querySelector(`.trip-main`);
 render(siteInfoWayElement, new InfoAboutWayComponent().getElement(), RenderPosition.AFTERBEGIN);
+
