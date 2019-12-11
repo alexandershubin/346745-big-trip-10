@@ -61,6 +61,7 @@ const generateCard = () => {
     active: getNumberActive(),
     offer: sum,
     option: getRandomOption(),
+    isArchive: Math.random() > 0.5,
   };
 };
 
