@@ -1,77 +1,27 @@
-import CardComponent from "./components/card";
 import FilterComponent from "./components/filter.js";
 import InfoAboutWayComponent from "./components/info-way";
 import MenuComponent from "./components/site-menu";
-import NewEventFormsComponent from "./components/form-edit";
-import PointComponent from "./components/points";
-import {generateCards} from "./mock/card";
 import {generateFilters} from "./mock/filter";
 import {generateMenu} from "./mock/site-menu";
-import {render, RenderPosition} from "./utils";
+import {render, RenderPosition} from './utils/render.js';
+import TripController from './controllers/trip.js';
+import {generateCards} from "./mock/card";
 
-const CARD__COUNT = 4;
-
-const renderCard = (card) => {
-  const onEscKeyDown = (evt) => {
-    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-    if (isEscKey) {
-      replaceEditToCard();
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
-  };
-
-  const replaceEditToCard = () => {
-    siteFilterElement.replaceChild(cardComponent.getElement(), newEventFormsComponent.getElement());
-  };
-
-  const replaceCardToEdit = () => {
-    siteFilterElement.replaceChild(newEventFormsComponent.getElement(), cardComponent.getElement());
-  };
-
-  const cardComponent = new CardComponent(card);
-  const newEventFormsComponent = new NewEventFormsComponent(card);
-
-  const arrowButton = cardComponent.getElement().querySelectorAll(`.event__rollup-btn`);
-  arrowButton.forEach((it) => {
-    it.addEventListener(`click`, () => {
-      replaceCardToEdit();
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-  });
-
-  const editForm = newEventFormsComponent.getElement().querySelector(`form`);
-  if (editForm) {
-    editForm.addEventListener(`submit`, replaceEditToCard);
-  }
-
-  render(siteFilterElement, cardComponent.getElement(), RenderPosition.BEFOREEND);
-};
+export const CARD__COUNT = 4;
 
 // вставляю меню и фильтр
 const siteMenuElement = document.querySelector(`.trip-controls`);
-const siteFilterElement = document.querySelector(`.trip-events`);
 
 const menus = generateMenu();
 const filters = generateFilters();
-render(siteMenuElement, new MenuComponent(menus).getElement(), RenderPosition.BEFOREEND);
-render(siteMenuElement, new FilterComponent(filters).getElement(), RenderPosition.BEFOREEND);
+render(siteMenuElement, new MenuComponent(menus), RenderPosition.BEFOREEND);
+render(siteMenuElement, new FilterComponent(filters), RenderPosition.BEFOREEND);
 
 const cards = generateCards(CARD__COUNT);
-const generatePoint = () => {
-  render(siteFilterElement, new PointComponent().getElement(), RenderPosition.BEFOREEND);
-};
-if (CARD__COUNT === 0) {
-  generatePoint();
-}
-// карточки
-new Array(CARD__COUNT)
-.fill(``)
-.forEach(
-    () => renderCard(cards)
-);
 
 // информация о маршруте
 const siteInfoWayElement = document.querySelector(`.trip-main`);
-render(siteInfoWayElement, new InfoAboutWayComponent().getElement(), RenderPosition.AFTERBEGIN);
+render(siteInfoWayElement, new InfoAboutWayComponent(), RenderPosition.AFTERBEGIN);
 
+const tripController = new TripController(siteInfoWayElement);
+tripController.render(cards);

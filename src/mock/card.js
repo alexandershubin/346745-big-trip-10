@@ -1,5 +1,5 @@
 import {DescriptionText, TypePointWay, Cites, Transfers, Activities, MoreOptions} from "../const";
-import {getRandomIntegerNumber} from "../utils";
+import {getRandomIntegerNumber} from "../utils/common";
 
 const getRandomText = () => {
   const result = [];
@@ -72,4 +72,3 @@ const generateCards = (count) => {
 };
 
 export {generateCard, generateCards};
-

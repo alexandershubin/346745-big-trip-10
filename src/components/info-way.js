@@ -1,4 +1,4 @@
-import {createElement} from "../utils";
+import AbstractComponent from './abstract-component.js';
 
 const createInfoAboutWayTemplate = () => {
   return (
@@ -10,24 +10,8 @@ const createInfoAboutWayTemplate = () => {
   );
 };
 
-export default class Way {
-  constructor() {
-    this._element = null;
-  }
-
+export default class Way extends AbstractComponent {
   getTemplate() {
     return createInfoAboutWayTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

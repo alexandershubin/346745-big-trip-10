@@ -1,4 +1,4 @@
-import {createElement} from "../utils";
+import AbstractComponent from './abstract-component.js';
 
 const createNewEventFormsTemplate = () => {
   return (
@@ -180,24 +180,14 @@ const createNewEventFormsTemplate = () => {
   );
 };
 
-export default class FormEdit {
-  constructor() {
-    this._element = null;
-  }
-
+export default class FormEdit extends AbstractComponent {
   getTemplate() {
     return createNewEventFormsTemplate();
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setSubmitHandler(handler) {
+    this.getElement().querySelector(`form`)
+    .addEventListener(`submit`, handler);
   }
 }
+
