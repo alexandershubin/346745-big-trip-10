@@ -186,8 +186,9 @@ export default class FormEdit extends AbstractComponent {
   }
 
   setSubmitHandler(handler) {
-    this.getElement().querySelector(`form`)
-    .addEventListener(`submit`, handler);
+    this.getElement().querySelector(`form`);
+    if (this) {
+      this.getElement().addEventListener(`submit`, handler);
+    }
   }
 }
-

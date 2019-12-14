@@ -98,7 +98,7 @@ export default class Card extends AbstractComponent {
   }
 
   setEditButtonClickHandler(handler) {
-    this.getElement().querySelector(`.card__btn--edit`)
+    this.getElement().querySelector(`.event__rollup-btn`)
     .addEventListener(`click`, handler);
   }
 }

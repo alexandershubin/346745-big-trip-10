@@ -17,6 +17,10 @@ const renderMenu = (menu) => {
 };
 
 export default class Menu extends AbstractComponent {
+  constructor(menu) {
+    super();
+    this._menu = menu;
+  }
   getTemplate() {
     return createMenuTemplate(this._menu);
   }
