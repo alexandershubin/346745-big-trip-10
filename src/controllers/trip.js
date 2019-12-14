@@ -1,7 +1,6 @@
 import {render, RenderPosition, replace} from "../utils/render";
 import CardComponent from "../components/card";
 import NewEventFormsComponent from "../components/form-edit";
-import {generateCards} from "../mock/card";
 import PointComponent from "../components/points";
 import {CARD__COUNT} from "../main";
 
