@@ -1,21 +1,5 @@
 import {renderTwoOption} from "../mock/card";
-import {castTimeFormat} from "../utils/common";
-import AbstractComponent from './abstract-component.js';
-
-const createCardTemplate = (cards) => {
-  return (
-    `<li class="trip-days__item  day">
-      <div class="day__info">
-        <span class="day__counter">1</span>
-        <time class="day__date" datetime="2019-03-18">MAR 18</time>
-      </div>
-      
-      <ul class="trip-events__list">
-        ${cards.map(renderCard).join(``)}
-      </ul>
-    </li>`
-  );
-};
+import {castTimeFormat, createElement} from "../utils";
 
 const getTimeDiffString = (time) => {
   let hours = new Date(time).getUTCHours();
@@ -30,12 +14,12 @@ const getPointTimeMarkup = (start, end) => {
   const startTime = `${castTimeFormat(start.getHours())}:${castTimeFormat(start.getMinutes())}`;
   const finishTime = `${castTimeFormat(end.getHours())}:${castTimeFormat(end.getMinutes())}`;
   return `
-      <time class="event__start-time" datetime="${start}">${startTime}</time>
-        &mdash;
-        <time class="event__end-time" datetime="${end}">${finishTime}</time>`;
+    <time class="event__start-time" datetime="${start}">${startTime}</time>
+    &mdash;
+    <time class="event__end-time" datetime="${end}">${finishTime}</time>`;
 };
 
-const renderCard = (card) => {
+export const createCardTemplate = (card) => {
   const {start, end} = card;
   const pointTimeMarkup = getPointTimeMarkup(start, end);
 
@@ -48,7 +32,7 @@ const renderCard = (card) => {
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${card.type}.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${card.type} to ${card.cites} </h3>
+        <h3 class="event__title">${card.type} to ${card.city} </h3>
   
         <div class="event__schedule">
           <p class="event__time">
@@ -72,33 +56,34 @@ const renderCard = (card) => {
           `).join(` `)}
         </ul>
   
-        ${renderButton()}
+         <button class="event__rollup-btn" type="button">
+          <span class="visually-hidden">Open event</span>
+        </button>
       </div>
     </li>
   `);
 };
 
-
-const renderButton = () => {
-  return (`
-    <button class="event__rollup-btn" type="button">
-      <span class="visually-hidden">Open event</span>
-    </button>
-  `);
-};
-
-export default class Card extends AbstractComponent {
+export default class CardComponent {
   constructor(card) {
-    super();
     this._card = card;
+
+    this._element = null;
   }
 
   getTemplate() {
     return createCardTemplate(this._card);
   }
 
-  setEditButtonClickHandler(handler) {
-    this.getElement().querySelector(`.event__rollup-btn`)
-    .addEventListener(`click`, handler);
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
   }
 }

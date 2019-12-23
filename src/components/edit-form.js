@@ -1,6 +1,6 @@
-import AbstractComponent from './abstract-component.js';
+import {createElement} from "../utils";
 
-const createNewEventFormsTemplate = () => {
+export const createEditCardFormsTemplate = () => {
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
       <header class="event__header">
@@ -180,15 +180,24 @@ const createNewEventFormsTemplate = () => {
   );
 };
 
-export default class FormEdit extends AbstractComponent {
-  getTemplate() {
-    return createNewEventFormsTemplate();
+export default class EditForm {
+  constructor() {
+    this._element = null;
   }
 
-  setSubmitHandler(handler) {
-    this.getElement().querySelector(`form`);
-    if (this) {
-      this.getElement().addEventListener(`submit`, handler);
+  getTemplate() {
+    return createEditCardFormsTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
     }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
   }
 }

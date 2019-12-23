@@ -28,7 +28,7 @@ export const Activities = [
   `sightseeing`
 ];
 
-export const Cites = [
+export const Cities = [
   `Amsterdam`,
   `Geneva`,
   `Chamonix`,
@@ -75,17 +75,16 @@ export const filtersNames = [`Everything`, `Future`, `today`];
 export const menu = [`Table`, `Stats`];
 
 export const MonthNames = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
+  `Jan`,
+  `Feb`,
+  `Mar`,
+  `Apr`,
   `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`,
+  `Jun`,
+  `Jul`,
+  `Aug`,
+  `Sep`,
+  `Oct`,
+  `Nov`,
+  `Dec`,
 ];
-

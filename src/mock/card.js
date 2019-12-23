@@ -1,5 +1,7 @@
-import {DescriptionText, TypePointWay, Cites, Transfers, Activities, MoreOptions} from "../const";
-import {getRandomIntegerNumber} from "../utils/common";
+import {DescriptionText, TypePointWay, Cities, Transfers, Activities, MoreOptions} from "../const";
+import {getRandomIntegerNumber} from "../utils";
+
+const CARDS_COUNT = 3;
 
 const getRandomText = () => {
   const result = [];
@@ -24,7 +26,7 @@ const getNumberTransfer = () => {
 };
 
 // получение городов
-const getRandomCites = () => Cites[getRandomIntegerNumber(0, Cites.length)];
+const getRandomCites = () => Cities[getRandomIntegerNumber(0, Cities.length)];
 
 // фото
 const getPictureLoad = () => {
@@ -48,11 +50,10 @@ let randomFirstDate = getRandomDate(new Date(), new Date(2020, 11, 31));
 
 const generateCard = () => {
   const start = randomFirstDate;
-  const randomSecondDate = new Date(randomFirstDate.setHours(randomFirstDate.getHours() + 2));
-  const end = randomSecondDate;
+  const end = new Date(randomFirstDate.setHours(randomFirstDate.getHours() + 2));
   return {
     type: getRandomType(),
-    cites: getRandomCites(),
+    city: getRandomCites(),
     photo: getPictureLoad(),
     description: getRandomText(),
     start,
@@ -61,14 +62,14 @@ const generateCard = () => {
     active: getNumberActive(),
     offer: sum,
     option: getRandomOption(),
-    isArchive: Math.random() > 0.5,
   };
 };
 
 const generateCards = (count) => {
   return new Array(count)
-    .fill(``)
-    .map(generateCard);
+  .fill(``)
+  .map(generateCard);
 };
 
-export {generateCard, generateCards};
+const cards = generateCards(CARDS_COUNT);
+export {cards};
