@@ -1,7 +1,7 @@
 import {DescriptionText, TypePointWay, Cities, Transfers, Activities, MoreOptions} from "../const";
-import {getRandomIntegerNumber} from "../utils";
+import {getRandomIntegerNumber} from "../utils/common";
 
-const CARDS_COUNT = 3;
+const CARDS_COUNT = 5;
 
 const getRandomText = () => {
   const result = [];
@@ -65,7 +65,7 @@ const generateCard = () => {
   };
 };
 
-const generateCards = (count) => {
+export const generateCards = (count) => {
   return new Array(count)
   .fill(``)
   .map(generateCard);

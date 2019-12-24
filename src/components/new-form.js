@@ -1,4 +1,3 @@
-import {createElement} from "../utils";
 
 export const createNewCardFormTemplate = () => {
   return (`
@@ -194,24 +193,24 @@ export const createNewCardFormTemplate = () => {
   `);
 };
 
-export default class NewForm {
-  constructor() {
-    this._element = null;
-  }
-
-  getTemplate() {
-    return createNewCardFormTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-}
+// export default class NewForm {
+//   constructor() {
+//     this._element = null;
+//   }
+//
+//   getTemplate() {
+//     return createNewCardFormTemplate();
+//   }
+//
+//   getElement() {
+//     if (!this._element) {
+//       this._element = createElement(this.getTemplate());
+//     }
+//
+//     return this._element;
+//   }
+//
+//   removeElement() {
+//     this._element = null;
+//   }
+// }

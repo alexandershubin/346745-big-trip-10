@@ -1,5 +1,6 @@
 import {renderTwoOption} from "../mock/card";
-import {castTimeFormat, createElement} from "../utils";
+import {castTimeFormat} from "../utils";
+// import {createElement} from "../utils/render";
 
 const getTimeDiffString = (time) => {
   let hours = new Date(time).getUTCHours();
@@ -64,26 +65,26 @@ export const createCardTemplate = (card) => {
   `);
 };
 
-export default class CardComponent {
-  constructor(card) {
-    this._card = card;
-
-    this._element = null;
-  }
-
-  getTemplate() {
-    return createCardTemplate(this._card);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-}
+// export default class CardComponent {
+//   constructor(card) {
+//     this._card = card;
+//
+//     this._element = null;
+//   }
+//
+//   getTemplate() {
+//     return createCardTemplate(this._card);
+//   }
+//
+//   getElement() {
+//     if (!this._element) {
+//       this._element = createElement(this.getTemplate());
+//     }
+//
+//     return this._element;
+//   }
+//
+//   removeElement() {
+//     this._element = null;
+//   }
+// }

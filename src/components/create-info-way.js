@@ -1,4 +1,3 @@
-import {createElement} from "../utils";
 
 export const createInfoAboutWayTemplate = () => {
   return (
@@ -10,24 +9,24 @@ export const createInfoAboutWayTemplate = () => {
   );
 };
 
-export default class InfoWay {
-  constructor() {
-    this._element = null;
-  }
-
-  getTemplate() {
-    return createInfoAboutWayTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-}
+// export default class InfoWay {
+//   constructor() {
+//     this._element = null;
+//   }
+//
+//   getTemplate() {
+//     return createInfoAboutWayTemplate();
+//   }
+//
+//   getElement() {
+//     if (!this._element) {
+//       this._element = createElement(this.getTemplate());
+//     }
+//
+//     return this._element;
+//   }
+//
+//   removeElement() {
+//     this._element = null;
+//   }
+// }

@@ -1,4 +1,3 @@
-import {createElement} from "../utils";
 
 export const createDayTemplate = (day) => {
   return (
@@ -15,26 +14,26 @@ export const createDayTemplate = (day) => {
   );
 };
 
-export default class Day {
-  constructor(day) {
-    this._card = day;
-
-    this._element = null;
-  }
-
-  getTemplate() {
-    return createDayTemplate(this._card);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-}
+// export default class CreateDay {
+//   constructor(day) {
+//     this._day = day;
+//
+//     this._element = null;
+//   }
+//
+//   getTemplate() {
+//     return createDayTemplate(this._day);
+//   }
+//
+//   getElement() {
+//     if (!this._element) {
+//       this._element = createElement(this.getTemplate());
+//     }
+//
+//     return this._element;
+//   }
+//
+//   removeElement() {
+//     this._element = null;
+//   }
+// }

@@ -1,75 +1,39 @@
-import CardComponent from "./components/card";
-import InfoWay from "./components/create-info-way";
-import CreateDay from "./components/day";
-import EditForm from "./components/edit-form";
-import Filter from "./components/filter";
-import Menu from "./components/menu";
-import Sort from "./components/sort";
-import TripDays from "./components/trip-days";
+import {createInfoAboutWayTemplate} from "./components/create-info-way";
+import {createDayTemplate} from "./components/day";
+import {createFiltersTemplate} from "./components/filter";
+import {createMenuTemplate} from "./components/menu";
+import {createSortTemplate} from "./components/sort";
+import {createTripDaysTemplate} from "./components/trip-days";
+import {createCardTemplate} from "./components/card";
+import {createEditCardFormsTemplate} from "./components/edit-form";
 import {cards} from "./mock/card";
+import {generateCards} from "./mock/card";
 import {MonthNames} from "./const";
-import {render, RenderPosition} from "./utils";
 import {generateFilters} from "./mock/filter";
 import {generateMenu} from "./mock/menu";
+// import {RenderPosition} from "./utils";
 
-// const CARD__COUNT = 3;
-
-const renderCard = (card) => {
-  const onEscKeyDown = (evt) => {
-    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-    if (isEscKey) {
-      replaceEditToCard();
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
-  };
-
-  const replaceEditToCard = () => {
-    siteFormChangeElements.replaceChild(cardComponent.getElement(), newEventFormsComponent.getElement());
-  };
-
-  const replaceCardToEdit = () => {
-    siteFormChangeElements.replaceChild(newEventFormsComponent.getElement(), cardComponent.getElement());
-  };
-
-  const cardComponent = new CardComponent(card);
-  const newEventFormsComponent = new EditForm(card);
-
-  const arrowButton = cardComponent.getElement().querySelectorAll(`.event__rollup-btn`);
-  arrowButton.forEach((it) => {
-    it.addEventListener(`click`, () => {
-      replaceCardToEdit();
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-  });
-
-  const editForm = newEventFormsComponent.getElement().querySelector(`form`);
-  if (editForm) {
-    editForm.addEventListener(`submit`, replaceEditToCard);
-  }
-
-  render(siteFormChangeElements, cardComponent.getElement(), RenderPosition.BEFOREEND);
+const render = (container, template, place = `beforeend`) => {
+  container.insertAdjacentHTML(place, template);
 };
-
 // вставляю меню и фильтр
 const siteMenuElement = document.querySelector(`.trip-controls`);
 const menus = generateMenu();
 const filters = generateFilters();
-render(siteMenuElement, new Menu(menus).getElement(), RenderPosition.BEFOREEND);
-render(siteMenuElement, new Filter(filters).getElement(), RenderPosition.BEFOREEND);
+render(siteMenuElement, createMenuTemplate(menus));
+render(siteMenuElement, createFiltersTemplate(filters));
 
 // Форма изменения
 const siteFormChangeElements = document.querySelector(`.trip-events`);
-// render(siteFormChangeElements, createEditCardFormsTemplate());
-render(siteFormChangeElements, new Sort().getElement(), RenderPosition.BEFOREEND);
-render(siteFormChangeElements, new TripDays().getElement(), RenderPosition.BEFOREEND);
+render(siteFormChangeElements, createSortTemplate());
+render(siteFormChangeElements, createTripDaysTemplate());
 
-const createDay = new CreateDay();
+// const createDay = new CreateDay();
 const tripDaysElement = document.querySelector(`.trip-days`);
-render(tripDaysElement, createDay.getElement(), RenderPosition.BEFOREEND);
-// Форма создания
-const tripEventsListElement = document.querySelector(`.trip-events__list`);
-// render(tripEventsListElement, createNewCardFormTemplate());
+
+// Форма редактирования
+const event = generateCards();
+render(siteFormChangeElements, createEditCardFormsTemplate(event));
 
 // получаем уникальные дни
 let unicDay = new Set();
@@ -80,15 +44,11 @@ cards.forEach((card) => {
 });
 
 Array.from(unicDay).forEach((day) => {
-  render(tripDaysElement, createDay.getElement(day));
-  cards.forEach((card) => {
-    render(tripEventsListElement, renderCard(card));
-  });
+  render(tripDaysElement, createDayTemplate(day));
+  const tripEventsListElement = document.querySelector(`.trip-events__list`);
+  cards.forEach((card) => render(tripEventsListElement, createCardTemplate(card)));
 });
-
-// отрисовываем точки маршрута
-// cards.forEach((card) => render(tripEventsListElement, createCardTemplate(card)));
 
 // информация о маршруте
 const siteInfoWayElement = document.querySelector(`.trip-main`);
-render(siteInfoWayElement, new InfoWay().getElement(), RenderPosition.AFTERBEGIN);
+render(siteInfoWayElement, createInfoAboutWayTemplate(), `afterbegin`);
