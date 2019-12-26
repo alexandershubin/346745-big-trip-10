@@ -1,43 +1,48 @@
+import {createElement} from "../utils.js";
 
-export const createFiltersTemplate = (filters) => {
-  return (
-    `<form class="trip-filters" action="#" method="get">
-       ${filters.map(renderFilter).join(``)}
+export default class Filters {
+  constructor(filters) {
+    this._filters = filters;
+    this._element = null;
+  }
+
+  getTemplate(filters) {
+    return `<form class="trip-filters" action="#" method="get">
+    ${filters
+    .map((filter) => {
+      return `
+          <div class="trip-filters__filter">
+            <input
+              id="filter-${filter.name}"
+              class="trip-filters__filter-input  visually-hidden"
+              type="radio"
+              name="trip-filter"
+              value="${filter.name}"
+              ${filter.checked && `checked`}
+            />
+            <label class="trip-filters__filter-label" for="filter-
+            ${filter.name}">
+            ${filter.name}
+            </label>
+          </div>
+      `;
+    })
+    .join(``)}
+
       <button class="visually-hidden" type="submit">Accept filter</button>
-    </form>`
-  );
-};
+    </form>
+  `;
+  }
 
-const renderFilter = (filter) => {
-  const {name} = filter;
-  return (
-    `<div class="trip-filters__filter">
-      <input id="filter-past" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="past">
-      <label class="trip-filters__filter-label" for="filter-past">${name}</label>
-    </div>
-`);
-};
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate(this._filters));
+    }
 
-// export default class Filter {
-//   constructor(filter) {
-//     this._filter = filter;
-//
-//     this._element = null;
-//   }
-//
-//   getTemplate() {
-//     return createFiltersTemplate(this._filter);
-//   }
-//
-//   getElement() {
-//     if (!this._element) {
-//       this._element = createElement(this.getTemplate());
-//     }
-//
-//     return this._element;
-//   }
-//
-//   removeElement() {
-//     this._element = null;
-//   }
-// }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

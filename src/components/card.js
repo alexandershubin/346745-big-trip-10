@@ -1,90 +1,69 @@
-import {renderTwoOption} from "../mock/card";
-import {castTimeFormat} from "../utils";
-// import {createElement} from "../utils/render";
+import {createElement, parseTime} from "../utils.js";
 
-const getTimeDiffString = (time) => {
-  let hours = new Date(time).getUTCHours();
-  let minutes = new Date(time).getUTCMinutes();
+export default class Card {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
 
-  hours = castTimeFormat(hours);
-  minutes = castTimeFormat(minutes);
-  return `${hours}H ${minutes}M `;
-};
-
-const getPointTimeMarkup = (start, end) => {
-  const startTime = `${castTimeFormat(start.getHours())}:${castTimeFormat(start.getMinutes())}`;
-  const finishTime = `${castTimeFormat(end.getHours())}:${castTimeFormat(end.getMinutes())}`;
-  return `
-    <time class="event__start-time" datetime="${start}">${startTime}</time>
-    &mdash;
-    <time class="event__end-time" datetime="${end}">${finishTime}</time>`;
-};
-
-export const createCardTemplate = (card) => {
-  const {start, end} = card;
-  const pointTimeMarkup = getPointTimeMarkup(start, end);
-
-  const diffTime = (end.getTime() - start.getTime());
-  const diff = getTimeDiffString(diffTime);
-
-  return (`
-    <li class="trip-events__item">
-      <div class="event">
-        <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="img/icons/${card.type}.png" alt="Event type icon">
-        </div>
-        <h3 class="event__title">${card.type} to ${card.city} </h3>
-  
-        <div class="event__schedule">
-          <p class="event__time">
-          ${pointTimeMarkup}
-          </p>
-          <p class="event__duration">${diff}</p>
-        </div>
-  
-        <p class="event__price">
-          €&nbsp;<span class="event__price-value">${card.offer}</span>
-        </p>
-  
-        <h4 class="visually-hidden">Offers:</h4>
-        <ul class="event__selected-offers">
-        ${renderTwoOption.map((option) => `
-          <li class="event__offer">
-            <span class="event__offer-title">${option.name}</span>
-            &plus;
-            &euro;&nbsp;<span class="event__offer-price">${option.price}</span>
-          </li>
-          `).join(` `)}
-        </ul>
-  
-         <button class="event__rollup-btn" type="button">
-          <span class="visually-hidden">Open event</span>
-        </button>
+  getTemplate(card) {
+    return `<li class="trip-events__item">
+    <div class="event">
+      <div class="event__type">
+        <img class="event__type-icon" width="42" height="42"
+        src="img/icons/${card.type}.png" alt="Event type icon">
       </div>
-    </li>
-  `);
-};
+      <h3 class="event__title">${card.type} to airport</h3>
 
-// export default class CardComponent {
-//   constructor(card) {
-//     this._card = card;
-//
-//     this._element = null;
-//   }
-//
-//   getTemplate() {
-//     return createCardTemplate(this._card);
-//   }
-//
-//   getElement() {
-//     if (!this._element) {
-//       this._element = createElement(this.getTemplate());
-//     }
-//
-//     return this._element;
-//   }
-//
-//   removeElement() {
-//     this._element = null;
-//   }
-// }
+      <div class="event__schedule">
+        <p class="event__time">
+          <time class="event__start-time" datetime="2019-03-18T10:30">
+          ${parseTime(card.startDate)}
+          </time>
+          &mdash;
+          <time class="event__end-time" datetime="2019-03-18T11:00">
+          ${parseTime(card.endDate)}
+          </time>
+        </p>
+        <p class="event__duration">1H 30M</p>
+      </div>
+
+      <p class="event__price">
+        &euro;&nbsp;<span class="event__price-value">${card.price}</span>
+      </p>
+
+      <h4 class="visually-hidden">Offers:</h4>
+      <ul class="event__selected-offers">
+      ${card.offers
+    .map((offer) => {
+      return `
+            <li class="event__offer">
+              <span class="event__offer-title">${offer.name}</span>
+              &plus; &euro;&nbsp;
+              <span class="event__offer-price">${offer.price}</span>
+            </li>
+          `;
+    })
+    .join(``)}
+      </ul>
+
+      <button class="event__rollup-btn" type="button">
+        <span class="visually-hidden">Open event</span>
+      </button>
+    </div>
+  </li>
+`;
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate(this._card));
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

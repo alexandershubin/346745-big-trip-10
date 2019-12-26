@@ -1,75 +1,59 @@
-import {DescriptionText, TypePointWay, Cities, Transfers, Activities, MoreOptions} from "../const";
-import {getRandomIntegerNumber} from "../utils/common";
+import {sentences, types, cities, offers} from "../const";
 
-const CARDS_COUNT = 5;
+const CARDS_COUNT = 10;
+const OFFERS_COUNT = 3;
 
-const getRandomText = () => {
-  const result = [];
-  const sentences = DescriptionText.slice(0);
-
-  while (result.length < 3) {
-    result.push(
-        sentences[getRandomIntegerNumber(0, sentences.length)]
-    );
+const shuffleArray = (arr) => {
+  for (let i = 0; i > arr.length; i++) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-  return result.join(` `);
+  return arr;
 };
 
-const getRandomType = () => TypePointWay[getRandomIntegerNumber(0, TypePointWay.length)];
-
-const getNumberActive = () => {
-  return Activities.join(`\n`);
-};
-
-const getNumberTransfer = () => {
-  return Transfers.join(`\n`);
-};
-
-// получение городов
-const getRandomCites = () => Cities[getRandomIntegerNumber(0, Cities.length)];
-
-// фото
 const getPictureLoad = () => {
   return `http://picsum.photos/300/150?r=${Math.random()}`;
 };
 
-// offer
-export let renderTwoOption = MoreOptions.slice(0, 2);
-const sum = renderTwoOption.reduce((accumulator, currentValue) => {
-  return accumulator + currentValue.price;
-}, 0);
 
-const getRandomOption = () => MoreOptions[getRandomIntegerNumber(0, MoreOptions.length)];
+const getRandomText = () =>
+  shuffleArray(sentences)
+  .slice(0, getRandomIntegerNumber(1, 4))
+  .join(` `);
 
-// дата;
-const getRandomDate = (start, end) => {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+const getRandomIntegerNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min)) + min;
 };
 
-let randomFirstDate = getRandomDate(new Date(), new Date(2020, 11, 31));
+const getRandomArrayItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+const getRandomDate = () => {
+  return (
+    Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * getRandomIntegerNumber(0, 60) * 60 * 1000
+  );
+};
 
 const generateCard = () => {
-  const start = randomFirstDate;
-  const end = new Date(randomFirstDate.setHours(randomFirstDate.getHours() + 2));
+  const startDate = getRandomDate();
+  const endDate = getRandomDate();
   return {
-    type: getRandomType(),
-    city: getRandomCites(),
-    photo: getPictureLoad(),
-    description: getRandomText(),
-    start,
-    end,
-    trans: getNumberTransfer(),
-    active: getNumberActive(),
-    offer: sum,
-    option: getRandomOption(),
+    type: getRandomArrayItem(types),
+    city: getRandomArrayItem(cities),
+    startDate: Math.min(startDate, endDate),
+    endDate: Math.max(startDate, endDate),
+    offers: shuffleArray(offers).slice(0, OFFERS_COUNT),
+    photos: Array(5)
+    .fill(``)
+    .map(getPictureLoad),
+    description: getRandomText(sentences),
+    price: getRandomIntegerNumber(10, 100)
   };
 };
 
-export const generateCards = (count) => {
-  return new Array(count)
+const generateCards = (count) => {
+  return Array(count)
   .fill(``)
   .map(generateCard);
 };
 
-const cards = generateCards(CARDS_COUNT);
-export {cards};
+export const cards = generateCards(CARDS_COUNT);
