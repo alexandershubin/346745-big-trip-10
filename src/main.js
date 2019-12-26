@@ -31,12 +31,12 @@ const tripDays = document.querySelector(`.trip-days`);
 dates.forEach((date, dateIndex) => {
   const day = new TripDayItemComponent(new Date(date), dateIndex + 1).getElement();
   cards
-  .filter((_card) => new Date(_card.startDate).toDateString() === date)
-  .forEach((_card) => {
+  .filter((card) => new Date(card.startDate).toDateString() === date)
+  .forEach((card) => {
     const eventsList = day.querySelector(`.trip-events__list`);
 
-    const cardComponent = new CardComponent(_card);
-    const cardEditComponent = new CardEditComponent(_card);
+    const cardComponent = new CardComponent(card);
+    const cardEditComponent = new CardEditComponent(card);
 
     renderElement(eventsList, cardComponent.getElement(), RenderPosition.BEFOREEND);
 
