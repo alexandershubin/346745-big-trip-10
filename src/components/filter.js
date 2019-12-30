@@ -1,13 +1,9 @@
-import {createElement} from "../utils.js";
+import AbstractComponent from './abstract-component.js';
 
-export default class Filters {
-  constructor(filters) {
-    this._filters = filters;
-    this._element = null;
-  }
 
-  getTemplate(filters) {
-    return `<form class="trip-filters" action="#" method="get">
+const createFilterTemplate = (filters) =>{
+  return (
+    `<form class="trip-filters" action="#" method="get">
     ${filters
     .map((filter) => {
       return `
@@ -28,21 +24,20 @@ export default class Filters {
       `;
     })
     .join(``)}
-
+  
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>
-  `;
-  }
+`);
+};
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate(this._filters));
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
+export default class Filter extends AbstractComponent {
+  constructor(filter) {
+    super();
+    this._filter = filter;
     this._element = null;
+  }
+
+  getTemplate() {
+    return createFilterTemplate(this._filter);
   }
 }

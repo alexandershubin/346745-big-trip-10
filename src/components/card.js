@@ -1,13 +1,9 @@
-import {createElement, parseTime} from "../utils.js";
+import AbstractComponent from "./abstract-component";
+import {parseTime} from "../utils/common";
 
-export default class Card {
-  constructor(card) {
-    this._card = card;
-    this._element = null;
-  }
-
-  getTemplate(card) {
-    return `<li class="trip-events__item">
+const createCardTemplate = (card) => {
+  return (
+    `<li class="trip-events__item">
     <div class="event">
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42"
@@ -52,18 +48,23 @@ export default class Card {
       </button>
     </div>
   </li>
-`;
-  }
+`);
+};
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate(this._card));
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
+export default class Card extends AbstractComponent {
+  constructor(card) {
+    super();
+    this._card = card;
     this._element = null;
   }
+
+  getTemplate() {
+    return createCardTemplate(this._card);
+  }
+
+  setClickHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`)
+    .addEventListener(`click`, handler);
+  }
 }
+
