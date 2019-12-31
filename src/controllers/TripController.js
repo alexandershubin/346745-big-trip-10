@@ -29,12 +29,12 @@ export default class TripController {
       const dayElement = day.getElement();
 
       cards
-      .filter((_card) => new Date(_card.startDate).toDateString() === date)
-      .forEach((_card) => {
+      .filter((card) => new Date(card.startDate).toDateString() === date)
+      .forEach((card) => {
         const eventsList = dayElement.querySelector(`.trip-events__list`);
 
-        const cardComponent = new CardComponent(_card);
-        const cardEditComponent = new CardEditComponent(_card);
+        const cardComponent = new CardComponent(card);
+        const cardEditComponent = new CardEditComponent(card);
 
         const onEscKeyDown = (evt) => {
           const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
