@@ -1,41 +1,22 @@
-import {createElement} from '../utils.js';
+import AbstractComponent from './abstract-component.js';
 
-const createMenuTemplate = (menus) => {
+const createSiteMenuTemplate = (menuItems) => {
   return (
     `<nav class="trip-controls__trip-tabs  trip-tabs">
-     ${menus.map(renderMenu).join(``)}
-    </nav>`
+  ${menuItems.map((item) =>
+      `<a class="trip-tabs__btn ${item.active && `trip-tabs__btn--active`}" href="#">${item.name}</a>`
+    ).join(``)}</nav>`
   );
 };
 
-
-const renderMenu = (menu) => {
-  const isActive = menu.value ? `trip-tabs__btn--active` : ``;
-  return (`
-   <a class="trip-tabs__btn ${isActive}" href="#">${menu.name}</a>
-  `);
-};
-
-export default class Menu {
-  constructor(menu) {
-    this._menu = menu;
-
+export default class SiteMenu extends AbstractComponent {
+  constructor(menuItems) {
+    super();
+    this._menuItems = menuItems;
     this._element = null;
   }
 
   getTemplate() {
-    return createMenuTemplate(this._menu);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+    return createSiteMenuTemplate(this._menuItems);
   }
 }

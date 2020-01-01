@@ -1,11 +1,14 @@
-import {filtersNames} from "../const";
-
-const generateFilters = () => {
-  return filtersNames.map((it) => {
-    return {
-      name: it,
-    };
-  });
-};
-
-export {generateFilters};
+export const filters = [
+  {
+    name: `everything`,
+    checked: true
+  },
+  {
+    name: `future`,
+    checked: false
+  },
+  {
+    name: `past`,
+    checked: false
+  }
+];

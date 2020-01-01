@@ -1,40 +1,37 @@
-export const TypePointWay = [
-  `bus`,
-  `check-in`,
-  `drive`,
-  `flight`,
-  `restaurant`,
-  `ship`,
-  `sightseeing`,
-  `taxi`,
-  `train`,
-  `transport`,
-  `trip`,
+export const offers = [
+  {
+    name: `Add luggage`,
+    type: `luggage`,
+    price: 15,
+    checked: true
+  },
+  {
+    name: `Switch to comfort class`,
+    type: `comfort`,
+    price: 55,
+    checked: false
+  },
+  {
+    name: `Add meal`,
+    type: `meal`,
+    price: 10,
+    checked: false
+  },
+  {
+    name: `Choose seats`,
+    type: `seats`,
+    price: 15,
+    checked: true
+  },
+  {
+    name: `Travel by train`,
+    type: `train`,
+    price: 35,
+    checked: false
+  }
 ];
 
-export const Transfers = [
-  `bus`,
-  `drive`,
-  `flight`,
-  `ship`,
-  `taxi`,
-  `train`,
-  `transport`,
-];
-
-export const Activities = [
-  `check-in`,
-  `restaurant`,
-  `sightseeing`
-];
-
-export const Cites = [
-  `Amsterdam`,
-  `Geneva`,
-  `Chamonix`,
-];
-
-export const DescriptionText = [
+export const sentences = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
   `Cras aliquet varius magna, non porta ligula feugiat eget.`,
   `Fusce tristique felis at fermentum pharetra.`,
@@ -42,50 +39,28 @@ export const DescriptionText = [
   `Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.`,
   `Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.`,
   `Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.`,
-  `Sed sed nisi sed augue convallis suscipit in sed felis.`,
-  `Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus.`,
-  `In rutrum ac purus sit amet tempus.`
+  `Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat.`,
+  `Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`
 ];
 
-export const MoreOptions = [
-  {
-    type: `luggage`,
-    name: `Add luggage`,
-    price: 10,
-  },
-  {
-    type: `comfort`,
-    name: `Switch to comfort class`,
-    price: 150
-  },
-  {
-    type: `meal`,
-    name: `Add meal`,
-    price: 2
-  },
-  {
-    type: `seats`,
-    name: `Choose seats`,
-    price: 9
-  },
+export const cities = [`Amsterdam`, `Geneva`, `Chamonix`, `Saint Petersburg`];
+
+export const types = [
+  `taxi`,
+  `bus`,
+  `train`,
+  `ship`,
+  `transport`,
+  `drive`,
+  `flight`,
+  `check-in`,
+  `sightseeing`,
+  `restaurant`,
+  `trip`
 ];
 
-export const filtersNames = [`Everything`, `Future`, `today`];
-
-export const menu = [`Table`, `Stats`];
-
-export const MonthNames = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`,
-];
-
+export const SortType = {
+  PRICE: `price`,
+  TIME: `time`,
+  CANCEL: `cancel`,
+};
