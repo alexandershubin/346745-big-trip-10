@@ -1,4 +1,5 @@
 import AbstractComponent from './abstract-component.js';
+import {SortType} from "../const";
 
 const createSortTemplate = () => {
   return (
@@ -12,8 +13,7 @@ const createSortTemplate = () => {
           type="radio"
           name="trip-sort"
           value="sort-event"
-          checked
-        />
+          checked data-sort-type="${SortType.CANCEL}"/>
         <label class="trip-sort__btn" for="sort-event">Event</label>
       </div>
 
@@ -23,8 +23,7 @@ const createSortTemplate = () => {
           class="trip-sort__input  visually-hidden"
           type="radio"
           name="trip-sort"
-          value="sort-time"
-        />
+          value="sort-time" data-sort-type="${SortType.TIME}"/>
         <label class="trip-sort__btn" for="sort-time">
           Time
           <svg
@@ -46,8 +45,7 @@ const createSortTemplate = () => {
           class="trip-sort__input  visually-hidden"
           type="radio"
           name="trip-sort"
-          value="sort-price"
-        />
+          value="sort-price" data-sort-type="${SortType.PRICE}"/>
         <label class="trip-sort__btn" for="sort-price">
           Price
           <svg
@@ -69,7 +67,30 @@ const createSortTemplate = () => {
 };
 
 export default class Sort extends AbstractComponent {
+  constructor() {
+    super();
+    this._currenSortType = SortType.CANCEL;
+  }
   getTemplate() {
     return createSortTemplate();
+  }
+
+  setSortTypeChangeHandler(handler) {
+    this.getElement().addEventListener(`click`, (evt) => {
+
+      if (evt.target.tagName !== `INPUT`) {
+        return;
+      }
+
+      const sortType = evt.target.dataset.sortType;
+
+      if (this._currenSortType === sortType) {
+        return;
+      }
+
+      this._currenSortType = sortType;
+
+      handler(this._currenSortType);
+    });
   }
 }
