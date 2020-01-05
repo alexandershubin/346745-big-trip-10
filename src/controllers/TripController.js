@@ -10,8 +10,7 @@ const tripEvents = document.querySelector(`.trip-events`);
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
 
 const renderCards = (cards, container, isDefaultSorting = true) => {
-  const dates = isDefaultSorting
-    ? [...new Set(cards.map((item) => new Date(item.startDate).toDateString()))]
+  const dates = isDefaultSorting ? [...new Set(cards.map((item) => new Date(item.startDate).toDateString()))]
     : [true];
 
   dates.forEach((date, dateIndex) => {
