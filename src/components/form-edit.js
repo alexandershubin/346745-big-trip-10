@@ -1,5 +1,5 @@
 import {parseDate} from "../utils/common";
-import AbstractComponent from './abstract-component.js';
+import AbstractSmartComponent from "./abstract-smart-component";
 
 const createFormEditTemplate = (form) => {
   return (
@@ -343,15 +343,38 @@ const createFormEditTemplate = (form) => {
   );
 };
 
-export default class FormEdit extends AbstractComponent {
+export default class FormEdit extends AbstractSmartComponent {
   constructor(form) {
     super();
+
     this._form = form;
-    this._element = null;
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
     return createFormEditTemplate(this._form);
+  }
+
+  recoveryListeners() {
+    this._subscribeOnEvents();
+  }
+
+  setFavoritesButtonClickHandler(handler) {
+    this.getElement()
+    .querySelector(`.event__favorite-checkbox`)
+    .addEventListener(`click`, handler);
+  }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+    element
+    .querySelector(`.event__type-list`)
+    .addEventListener(`click`, (evt) => {
+      if (evt.target.tagName === `INPUT`) {
+        this._eventType = evt.target.value;
+        this.rerender();
+      }
+    });
   }
 
   setSubmitHandler(handler) {

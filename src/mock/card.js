@@ -1,4 +1,4 @@
-import {sentences, types, cities, offers} from "../const";
+import {cities, offers, sentences, types} from "../const";
 
 const CARDS_COUNT = 10;
 const OFFERS_COUNT = 3;
@@ -46,14 +46,18 @@ const generateCard = () => {
     .fill(``)
     .map(getPictureLoad),
     description: getRandomText(sentences),
-    price: getRandomIntegerNumber(10, 100)
+    price: getRandomIntegerNumber(10, 100),
+    isFavorite: false
   };
 };
 
 const generateCards = (count) => {
   return Array(count)
   .fill(``)
-  .map(generateCard);
+  .map(generateCard)
+  .sort(
+      (currentCard, nextCard) => currentCard.startDate - nextCard.startDate
+  );
 };
 
 export const cards = generateCards(CARDS_COUNT);
