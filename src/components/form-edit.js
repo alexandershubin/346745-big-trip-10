@@ -1,4 +1,6 @@
 import {parseDate} from "../utils/common";
+import flatpickr from 'flatpickr';
+import {formatTime, formatDate} from '../utils/common.js';
 import AbstractSmartComponent from "./abstract-smart-component";
 
 const createFormEditTemplate = (form) => {
@@ -349,6 +351,7 @@ export default class FormEdit extends AbstractSmartComponent {
 
     this._form = form;
     this._subscribeOnEvents();
+    this._applyFlatpickr();
   }
 
   getTemplate() {
@@ -367,11 +370,8 @@ export default class FormEdit extends AbstractSmartComponent {
 
   _subscribeOnEvents() {
     const element = this.getElement();
-    element
-    .querySelector(`.event__type-list`)
-    .addEventListener(`click`, (evt) => {
+    element.querySelector(`.event__type-list`).addEventListener(`click`, (evt) => {
       if (evt.target.tagName === `INPUT`) {
-        this._eventType = evt.target.value;
         this.rerender();
       }
     });
@@ -379,5 +379,14 @@ export default class FormEdit extends AbstractSmartComponent {
 
   setSubmitHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
+  }
+
+  _applyFlatpickr() {
+    if (this._flatpickr) {
+      // При своем создании `flatpickr` дополнительно создает вспомогательные DOM-элементы.
+      // Что бы их удалять, нужно вызывать метод `destroy` у созданного инстанса `flatpickr`.
+      this._flatpickr.destroy();
+      this._flatpickr = null;
+    }
   }
 }
