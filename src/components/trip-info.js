@@ -1,4 +1,4 @@
-import {getDuration} from "../utils/common";
+import {formatDate} from "../utils/common";
 import AbstractComponent from './abstract-component.js';
 
 const crateTripInfoTemplate = (cards) => {
@@ -9,7 +9,7 @@ const crateTripInfoTemplate = (cards) => {
       ${cards[cards.length - 1].city}
       </h1>
       <p class="trip-info__dates">
-      ${getDuration(cards[0].startDate, cards[cards.length - 1].endDate)}
+      ${formatDate(cards[0].startDate, cards[cards.length - 1].endDate)}
       </p>
     </div>
 `);

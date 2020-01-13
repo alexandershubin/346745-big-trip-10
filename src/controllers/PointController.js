@@ -1,12 +1,7 @@
-import CardComponent from '../components/card';
-import FormEditComponent from "../components/form-edit";
-import {render, replace, RenderPosition} from '../utils/render.js';
-
-const Mode = {
-  DEFAULT: `default`,
-  EDIT: `edit`,
-};
-
+import Card from '../components/card';
+import FormEdit from "../components/form-edit";
+import {render, RenderPosition, replace} from '../utils/render.js';
+import {Mode} from "../const";
 
 export default class PointController {
   constructor(container, onDataChange, onViewChange) {
@@ -18,7 +13,6 @@ export default class PointController {
 
     this._cardComponent = null;
     this._cardEditComponent = null;
-
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
@@ -26,8 +20,8 @@ export default class PointController {
     const oldCardComponent = this._cardComponent;
     const oldFormEditComponent = this._cardEditComponent;
 
-    this._cardComponent = new CardComponent(card);
-    this._cardEditComponent = new FormEditComponent(card);
+    this._cardComponent = new Card(card);
+    this._cardEditComponent = new FormEdit(card);
 
     this._cardComponent.setClickHandler(() => {
       this._replaceCardToEdit();
@@ -40,7 +34,9 @@ export default class PointController {
       }));
     });
 
-    this._cardEditComponent.setSubmitHandler(() => this._replaceEditToCard());
+    this._cardEditComponent.setSubmitHandler(() => {
+      this._replaceEditToCard();
+    });
 
     if (oldFormEditComponent && oldCardComponent) {
       replace(this._cardComponent, oldCardComponent);
@@ -57,8 +53,6 @@ export default class PointController {
   }
 
   _replaceEditToCard() {
-    this._cardEditComponent.reset();
-
     replace(this._cardComponent, this._cardEditComponent);
     this._mode = Mode.DEFAULT;
   }

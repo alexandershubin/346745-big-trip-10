@@ -1,6 +1,5 @@
 import AbstractComponent from './abstract-component.js';
 
-
 const createFilterTemplate = (filters) =>{
   return (
     `<form class="trip-filters" action="#" method="get">

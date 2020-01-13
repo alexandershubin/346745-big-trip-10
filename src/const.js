@@ -64,3 +64,8 @@ export const SortType = {
   TIME: `time`,
   CANCEL: `cancel`,
 };
+
+export const Mode = {
+  DEFAULT: `default`,
+  EDIT: `edit`,
+};

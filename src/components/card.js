@@ -1,5 +1,5 @@
 import AbstractComponent from "./abstract-component";
-import {parseTime} from "../utils/common";
+import {formatTime} from "../utils/common";
 
 const createCardTemplate = (card) => {
   return (
@@ -14,14 +14,14 @@ const createCardTemplate = (card) => {
       <div class="event__schedule">
         <p class="event__time">
           <time class="event__start-time" datetime="2019-03-18T10:30">
-          ${parseTime(card.startDate)}
+          ${formatTime(card.startDate)}
           </time>
           &mdash;
           <time class="event__end-time" datetime="2019-03-18T11:00">
-          ${parseTime(card.endDate)}
+          ${formatTime(card.endDate)}
           </time>
         </p>
-        <p class="event__duration">1H 30M</p>
+        <p class="event__duration">${formatTime(card.startDate - card.endDate)}</p>
       </div>
 
       <p class="event__price">
