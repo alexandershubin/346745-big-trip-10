@@ -1,5 +1,4 @@
 import flatpickr from 'flatpickr';
-import {formatDate, formatTime} from "../utils/common";
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
 import AbstractSmartComponent from "./abstract-smart-component";
