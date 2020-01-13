@@ -15,7 +15,6 @@ const getPictureLoad = () => {
   return `http://picsum.photos/300/150?r=${Math.random()}`;
 };
 
-
 const getRandomText = () =>
   shuffleArray(sentences)
   .slice(0, getRandomIntegerNumber(1, 4))

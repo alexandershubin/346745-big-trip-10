@@ -1,9 +1,10 @@
-import {parseDate} from "../utils/common";
 import flatpickr from 'flatpickr';
-import {formatTime, formatDate} from '../utils/common.js';
+import {formatDate, formatTime} from "../utils/common";
+import 'flatpickr/dist/flatpickr.min.css';
+import 'flatpickr/dist/themes/light.css';
 import AbstractSmartComponent from "./abstract-smart-component";
 
-const createFormEditTemplate = (form) => {
+const createFormEditTemplate = (card) => {
   return (
     `<li class="trip-events__item">
         <form class="event  event--edit" action="#" method="post">
@@ -15,7 +16,7 @@ const createFormEditTemplate = (form) => {
                   class="event__type-icon"
                   width="17"
                   height="17"
-                  src="img/icons/${form.type}.png"
+                  src="img/icons/${card.type}.png"
                   alt="Event type icon"
                 />
               </label>
@@ -36,7 +37,7 @@ const createFormEditTemplate = (form) => {
                       type="radio"
                       name="event-type"
                       value="taxi"
-                      ${form.type === `taxi` && `checked`}
+                      ${card.type === `taxi` && `checked`}
                     />
                     <label
                       class="event__type-label  event__type-label--taxi"
@@ -52,7 +53,7 @@ const createFormEditTemplate = (form) => {
                       type="radio"
                       name="event-type"
                       value="bus"
-                      ${form.type === `bus` && `checked`}
+                      ${card.type === `bus` && `checked`}
                     />
                     <label
                       class="event__type-label  event__type-label--bus"
@@ -68,7 +69,7 @@ const createFormEditTemplate = (form) => {
                       type="radio"
                       name="event-type"
                       value="train"
-                      ${form.type === `train` && `checked`}
+                      ${card.type === `train` && `checked`}
                     />
                     <label
                       class="event__type-label  event__type-label--train"
@@ -84,7 +85,7 @@ const createFormEditTemplate = (form) => {
                       type="radio"
                       name="event-type"
                       value="ship"
-                      ${form.type === `ship` && `checked`}
+                      ${card.type === `ship` && `checked`}
                     />
                     <label
                       class="event__type-label  event__type-label--ship"
@@ -100,7 +101,7 @@ const createFormEditTemplate = (form) => {
                       type="radio"
                       name="event-type"
                       value="transport"
-                      ${form.type === `transport` && `checked`}
+                      ${card.type === `transport` && `checked`}
                     />
                     <label
                       class="event__type-label  event__type-label--transport"
@@ -116,7 +117,7 @@ const createFormEditTemplate = (form) => {
                       type="radio"
                       name="event-type"
                       value="drive"
-                      ${form.type === `drive` && `checked`}
+                      ${card.type === `drive` && `checked`}
                     />
                     <label
                       class="event__type-label  event__type-label--drive"
@@ -132,7 +133,7 @@ const createFormEditTemplate = (form) => {
                       type="radio"
                       name="event-type"
                       value="flight"
-                      ${form.type === `flight` && `checked`}
+                      ${card.type === `flight` && `checked`}
                     />
                     <label
                       class="event__type-label  event__type-label--flight"
@@ -152,7 +153,7 @@ const createFormEditTemplate = (form) => {
                       type="radio"
                       name="event-type"
                       value="check-in"
-                      ${form.type === `check-in` && `checked`}
+                      ${card.type === `check-in` && `checked`}
                     />
                     <label
                       class="event__type-label  event__type-label--check-in"
@@ -168,7 +169,7 @@ const createFormEditTemplate = (form) => {
                       type="radio"
                       name="event-type"
                       value="sightseeing"
-                      ${form.type === `sightseeing` && `checked`}
+                      ${card.type === `sightseeing` && `checked`}
                     />
                     <label
                       class="event__type-label  event__type-label--sightseeing"
@@ -184,7 +185,7 @@ const createFormEditTemplate = (form) => {
                       type="radio"
                       name="event-type"
                       value="restaurant"
-                      ${form.type === `restaurant` && `checked`}
+                      ${card.type === `restaurant` && `checked`}
                     />
                     <label
                       class="event__type-label  event__type-label--restaurant"
@@ -201,14 +202,14 @@ const createFormEditTemplate = (form) => {
                 class="event__label  event__type-output"
                 for="event-destination-1"
               >
-              ${form.type} at
+              ${card.type} at
               </label>
               <input
                 class="event__input  event__input--destination"
                 id="event-destination-1"
                 type="text"
                 name="event-destination"
-                value="${form.city}"
+                value="${card.city}"
                 list="destination-list-1"
               />
               <datalist id="destination-list-1">
@@ -227,7 +228,7 @@ const createFormEditTemplate = (form) => {
                 id="event-start-time-1"
                 type="text"
                 name="event-start-time"
-                value="${parseDate(form.startDate)}"
+                value=""
               />
               &mdash;
               <label class="visually-hidden" for="event-end-time-1">
@@ -238,7 +239,7 @@ const createFormEditTemplate = (form) => {
                 id="event-end-time-1"
                 type="text"
                 name="event-end-time"
-                value="${parseDate(form.endDate)}"
+                value=""
               />
             </div>
   
@@ -252,7 +253,7 @@ const createFormEditTemplate = (form) => {
                 id="event-price-1"
                 type="text"
                 name="event-price"
-                value="${form.price}"
+                value="${card.price}"
               />
             </div>
   
@@ -294,7 +295,7 @@ const createFormEditTemplate = (form) => {
                 </h3>
     
                 <div class="event__available-offers">
-                ${form.offers.map((offer) => {
+                ${card.offers.map((offer) => {
       return `
                     <div class="event__offer-selector">
                       <input
@@ -322,12 +323,12 @@ const createFormEditTemplate = (form) => {
                   Destination
                 </h3>
                 <p class="event__destination-description">
-                ${form.description}
+                ${card.description}
                 </p>
     
         <div class="event__photos-container">
           <div class="event__photos-tape">
-          ${form.photos.map((photo) => {
+          ${card.photos.map((photo) => {
       return `
               <img
                 class="event__photo"
@@ -346,20 +347,27 @@ const createFormEditTemplate = (form) => {
 };
 
 export default class FormEdit extends AbstractSmartComponent {
-  constructor(form) {
+  constructor(card) {
     super();
 
-    this._form = form;
+    this._card = card;
     this._subscribeOnEvents();
     this._applyFlatpickr();
+    this._flatpickr = null;
   }
 
   getTemplate() {
-    return createFormEditTemplate(this._form);
+    return createFormEditTemplate(this._card);
   }
 
   recoveryListeners() {
     this._subscribeOnEvents();
+  }
+
+  rerender() {
+    super.rerender();
+
+    this._applyFlatpickr();
   }
 
   setFavoritesButtonClickHandler(handler) {
@@ -388,5 +396,21 @@ export default class FormEdit extends AbstractSmartComponent {
       this._flatpickr.destroy();
       this._flatpickr = null;
     }
+
+    const eventStartTime = this.getElement().querySelector(`#event-start-time-1`);
+    this._flatpickr = flatpickr(eventStartTime, {
+      dateFormat: `d/m/y H:i`,
+      enableTime: true,
+      allowInput: true,
+      defaultDate: this._card.startDate
+    });
+
+    const eventEndTime = this.getElement().querySelector(`#event-end-time-1`);
+    this._flatpickr = flatpickr(eventEndTime, {
+      dateFormat: `d/m/y H:i`,
+      enableTime: true,
+      allowInput: true,
+      defaultDate: this._card.endDate
+    });
   }
 }

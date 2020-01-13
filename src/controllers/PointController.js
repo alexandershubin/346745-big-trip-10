@@ -1,5 +1,5 @@
-import CardComponent from '../components/card';
-import FormEditComponent from "../components/form-edit";
+import Card from '../components/card';
+import FormEdit from "../components/form-edit";
 import {render, RenderPosition, replace} from '../utils/render.js';
 import {Mode} from "../const";
 
@@ -20,8 +20,8 @@ export default class PointController {
     const oldCardComponent = this._cardComponent;
     const oldFormEditComponent = this._cardEditComponent;
 
-    this._cardComponent = new CardComponent(card);
-    this._cardEditComponent = new FormEditComponent(card);
+    this._cardComponent = new Card(card);
+    this._cardEditComponent = new FormEdit(card);
 
     this._cardComponent.setClickHandler(() => {
       this._replaceCardToEdit();

@@ -1,6 +1,6 @@
-import SortComponent from "../components/sort";
-import TripDayItemComponent from "../components/trip-day";
-import TripInfoComponent from "../components/trip-info";
+import Sort from "../components/sort";
+import TripDay from "../components/trip-day";
+import TripInfo from "../components/trip-info";
 import {SortType} from "../const";
 import {render, RenderPosition} from "../utils/render";
 import PointController from "./PointController";
@@ -15,7 +15,7 @@ const renderCards = (cards, container, onDataChange, onViewChange, isDefaultSort
     : [true];
 
   dates.forEach((date, dateIndex) => {
-    const day = isDefaultSorting ? new TripDayItemComponent(new Date(date), dateIndex + 1) : new TripDayItemComponent();
+    const day = isDefaultSorting ? new TripDay(new Date(date), dateIndex + 1) : new TripDay();
 
     cards.filter((card) => {
       return isDefaultSorting ? new Date(card.startDate).toDateString() === date : card;
@@ -35,7 +35,7 @@ export default class TripController {
   constructor(container) {
     this._container = container;
 
-    this._eventsSortingComponent = new SortComponent();
+    this._eventsSortingComponent = new Sort();
     this._cards = [];
     this._showedCardControllers = [];
 
@@ -49,7 +49,7 @@ export default class TripController {
     }
     this._showedCardControllers = renderCards(cards, this._container, this._onDataChange, this._onViewChange);
 
-    render(tripInfo, new TripInfoComponent(cards), RenderPosition.AFTERBEGIN);
+    render(tripInfo, new TripInfo(cards), RenderPosition.AFTERBEGIN);
 
     render(tripEvents, this._eventsSortingComponent, RenderPosition.AFTERBEGIN);
 
