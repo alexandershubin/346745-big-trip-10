@@ -68,4 +68,5 @@ export const SortType = {
 export const Mode = {
   DEFAULT: `default`,
   EDIT: `edit`,
+  ADDING: `adding`
 };
