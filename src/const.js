@@ -70,3 +70,10 @@ export const Mode = {
   EDIT: `edit`,
   ADDING: `adding`
 };
+
+export const FilterType = {
+  EVERYTHING: `everything`,
+  FUTURE: `future`,
+  PAST: `past`
+};
+

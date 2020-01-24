@@ -60,4 +60,17 @@ const generateCards = (count) => {
   );
 };
 
+export const EmptyCard = {
+  id: String(Date.now() + Math.random()),
+  type: getRandomArrayItem(types),
+  city: getRandomArrayItem(cities),
+  startDate: Date.now(),
+  endDate: Date.now(),
+  offers: [],
+  photos: [],
+  description: ``,
+  price: 0,
+  isFavorite: false
+};
+
 export const cards = generateCards(CARDS_COUNT);

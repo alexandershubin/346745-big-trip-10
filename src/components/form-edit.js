@@ -2,6 +2,34 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
 import AbstractSmartComponent from "./abstract-smart-component";
+import moment from "moment";
+
+const parseFormData = (formData, offers, photos, description, id) => {
+  return {
+    type: formData.get(`event-type`),
+    city: formData.get(`event-destination`),
+    startDate: moment(
+        formData.get(`event-start-time`),
+        `DD/MM/YY HH:mm`
+    ).valueOf(),
+    endDate: moment(formData.get(`event-end-time`), `DD/MM/YY HH:mm`).valueOf(),
+    offers: offers.map((offer) => {
+      return {
+        name: offer.name,
+        price: offer.price,
+        type: offer.type,
+        checked:
+          formData.get(`event-offer-${offer.type}`) === `on` ? true : false
+      };
+    }),
+    photos,
+    description,
+    price: formData.get(`event-price`),
+    id,
+    isFavorite: formData.get(`event-favorite`) === `on`
+  };
+};
+
 
 const createFormEditTemplate = (card) => {
   return (
@@ -227,7 +255,7 @@ const createFormEditTemplate = (card) => {
                 id="event-start-time-1"
                 type="text"
                 name="event-start-time"
-                value=""
+                value="${card.startDate}"
               />
               &mdash;
               <label class="visually-hidden" for="event-end-time-1">
@@ -238,7 +266,7 @@ const createFormEditTemplate = (card) => {
                 id="event-end-time-1"
                 type="text"
                 name="event-end-time"
-                value=""
+                value="${card.endDate}"
               />
             </div>
   
@@ -259,14 +287,14 @@ const createFormEditTemplate = (card) => {
             <button class="event__save-btn  btn  btn--blue" type="submit">
               Save
             </button>
-            <button class="event__reset-btn" type="reset">Delete</button>
+            <button class="event__reset-btn" type="reset">${card.offers.length > 0 ? `Delete` : `Cancel`}</button>
   
             <input
               id="event-favorite-1"
               class="event__favorite-checkbox  visually-hidden"
               type="checkbox"
               name="event-favorite"
-              checked
+              ${card.isFavorite && `checked`}
             />
             <label class="event__favorite-btn" for="event-favorite-1">
               <span class="visually-hidden">Add to favorite</span>
@@ -287,62 +315,63 @@ const createFormEditTemplate = (card) => {
             </button>
           </header>
     
-            <section class="event__details">
-              <section class="event__section  event__section--offers">
-                <h3 class="event__section-title  event__section-title--offers">
-                  Offers
-                </h3>
-    
-                <div class="event__available-offers">
-                ${card.offers.map((offer) => {
-      return `
-                    <div class="event__offer-selector">
-                      <input
-                        class="event__offer-checkbox  visually-hidden"
-                        id="event-offer-${offer.type}-1"
-                        type="checkbox"
-                        name="event-offer-${offer.type}"
-                        ${offer.checked && `checked`}
-                      />
-                      <label class="event__offer-label" for="event-offer-
-                      ${offer.type}-1">
-                        <span class="event__offer-title">${offer.name}</span>
-                        &plus; &euro;&nbsp;<span class="event__offer-price">
-                        ${offer.price}
-                        </span>
-                      </label>
-                    </div>
-                    `;
-    }).join(``)}
-                </div>
-             </section>
-    
-              <section class="event__section  event__section--destination">
-                <h3 class="event__section-title  event__section-title--destination">
-                  Destination
-                </h3>
-                <p class="event__destination-description">
-                ${card.description}
-                </p>
-    
-        <div class="event__photos-container">
-          <div class="event__photos-tape">
-          ${card.photos.map((photo) => {
-      return `
-              <img
-                class="event__photo"
-                src="${photo}"
-                alt="Event photo"
-              />
-            `;
-    }).join(``)}
+           ${card.offers.length ? `<section class="event__details">
+          <section class="event__section  event__section--offers">
+            <h3 class="event__section-title  event__section-title--offers">
+              Offers
+            </h3>
+            <div class="event__available-offers">
+            ${card.offers
+      .map((offer) => {
+        return `
+                  <div class="event__offer-selector">
+                    <input
+                      class="event__offer-checkbox  visually-hidden"
+                      id="event-offer-${offer.type}-1"
+                      type="checkbox"
+                      name="event-offer-${offer.type}"
+                      ${offer.checked && `checked`}
+                    />
+                    <label class="event__offer-label" for="event-offer-${offer.type}-1">
+                      <span class="event__offer-title">${offer.name}</span>
+                      &plus; &euro;&nbsp;<span class="event__offer-price">
+                      ${offer.price}
+                      </span>
+                    </label>
+                  </div>
+                `;
+      })
+      .join(``)}
             </div>
-          </div>
-        </section>
-      </section>
-    </form>
-  </li>`
-  );
+          </section>
+          <section class="event__section  event__section--destination">
+            <h3 class="event__section-title  event__section-title--destination">
+              Destination
+            </h3>
+            <p class="event__destination-description">
+            ${card.description}
+            </p>
+            <div class="event__photos-container">
+              <div class="event__photos-tape">
+              ${card.photos
+      .map((photo) => {
+        return `
+                    <img
+                      class="event__photo"
+                      src="${photo}"
+                      alt="Event photo"
+                    />
+                  `;
+      })
+      .join(``)}
+              </div>
+            </div>
+          </section>
+        </section>` : ``
+    }
+      </form>
+    </li>
+  `);
 };
 
 export default class FormEdit extends AbstractSmartComponent {
@@ -350,23 +379,40 @@ export default class FormEdit extends AbstractSmartComponent {
     super();
 
     this._card = card;
-    this._subscribeOnEvents();
+    this._eventType = card.type;
+    this._flatpickrStartDate = null;
+    this._flatpickrEndDate = null;
+    this._submitHandler = null;
+    this._favoriteButtonClickHandler = null;
+    this._deleteButtonClickHandler = null;
     this._applyFlatpickr();
-    this._flatpickr = null;
   }
 
   getTemplate() {
-    return createFormEditTemplate(this._card);
+    return createFormEditTemplate(this._card, this._eventType);
   }
 
   recoveryListeners() {
+    this.setSubmitHandler(this._submitHandler);
+    this.setFavoriteButtonClickHandler(this._favoriteButtonClickHandler);
+    this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
     this._subscribeOnEvents();
   }
 
-  rerender() {
-    super.rerender();
+  setFavoriteButtonClickHandler(handler) {
+    this.getElement()
+    .querySelector(`.event__favorite-checkbox`)
+    .addEventListener(`click`, handler);
 
-    this._applyFlatpickr();
+    this._favoriteButtonClickHandler = handler;
+  }
+
+  setDeleteButtonClickHandler(handler) {
+    this.getElement()
+    .querySelector(`.event__reset-btn`)
+    .addEventListener(`click`, handler);
+
+    this._deleteButtonClickHandler = handler;
   }
 
   setFavoritesButtonClickHandler(handler) {
@@ -377,8 +423,12 @@ export default class FormEdit extends AbstractSmartComponent {
 
   _subscribeOnEvents() {
     const element = this.getElement();
-    element.querySelector(`.event__type-list`).addEventListener(`click`, (evt) => {
+
+    element
+    .querySelector(`.event__type-list`)
+    .addEventListener(`click`, (evt) => {
       if (evt.target.tagName === `INPUT`) {
+        this._eventType = evt.target.value;
         this.rerender();
       }
     });
@@ -386,30 +436,61 @@ export default class FormEdit extends AbstractSmartComponent {
 
   setSubmitHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
+    this._submitHandler = handler;
   }
 
   _applyFlatpickr() {
-    if (this._flatpickr) {
-      // При своем создании `flatpickr` дополнительно создает вспомогательные DOM-элементы.
-      // Что бы их удалять, нужно вызывать метод `destroy` у созданного инстанса `flatpickr`.
-      this._flatpickr.destroy();
-      this._flatpickr = null;
+    if (this._flatpickrStartDate || this._flatpickrEndDate) {
+      this._flatpickrStartDate.destroy();
+      this._flatpickrEndDate.destroy();
+      this._flatpickrStartDate = null;
+      this._flatpickrEndDate = null;
     }
 
-    const eventStartTime = this.getElement().querySelector(`#event-start-time-1`);
-    this._flatpickr = flatpickr(eventStartTime, {
+    const element = this.getElement();
+    const flatpickrOptions = {
       dateFormat: `d/m/y H:i`,
       enableTime: true,
-      allowInput: true,
-      defaultDate: this._card.startDate
-    });
+      allowInput: true
+    };
 
-    const eventEndTime = this.getElement().querySelector(`#event-end-time-1`);
-    this._flatpickr = flatpickr(eventEndTime, {
-      dateFormat: `d/m/y H:i`,
-      enableTime: true,
-      allowInput: true,
-      defaultDate: this._card.endDate
-    });
+    this._flatpickrStartDate = flatpickr(
+        element.querySelector(`input[name="event-start-time"]`),
+        Object.assign({}, flatpickrOptions, {defaultDate: this._card.startDate})
+    );
+
+    this._flatpickrEndDate = flatpickr(
+        element.querySelector(`input[name="event-end-time"]`),
+        Object.assign({}, flatpickrOptions, {defaultDate: this._card.endDate})
+    );
+  }
+
+  getData() {
+    const form = this.getElement().querySelector(`.event--edit`);
+    const formData = new FormData(form);
+
+    return parseFormData(
+        formData,
+        this._card.offers,
+        this._card.photos,
+        this._card.description,
+        this._card.id
+    );
+  }
+
+  removeElement() {
+    if (this._flatpickrStartDate || this._flatpickrEndDate) {
+      this._flatpickrStartDate.destroy();
+      this._flatpickrEndDate.destroy();
+      this._flatpickrStartDate = null;
+      this._flatpickrEndDate = null;
+    }
+
+    super.removeElement();
+  }
+
+  rerender() {
+    super.rerender();
+    this._applyFlatpickr();
   }
 }
