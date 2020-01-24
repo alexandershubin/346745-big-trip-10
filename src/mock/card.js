@@ -36,6 +36,7 @@ const generateCard = () => {
   const startDate = getRandomDate();
   const endDate = getRandomDate();
   return {
+    id: String(new Date() + Math.random()),
     type: getRandomArrayItem(types),
     city: getRandomArrayItem(cities),
     startDate: Math.min(startDate, endDate),
@@ -57,6 +58,19 @@ const generateCards = (count) => {
   .sort(
       (currentCard, nextCard) => currentCard.startDate - nextCard.startDate
   );
+};
+
+export const EmptyCard = {
+  id: String(Date.now() + Math.random()),
+  type: getRandomArrayItem(types),
+  city: getRandomArrayItem(cities),
+  startDate: Date.now(),
+  endDate: Date.now(),
+  offers: [],
+  photos: [],
+  description: ``,
+  price: 0,
+  isFavorite: false
 };
 
 export const cards = generateCards(CARDS_COUNT);
