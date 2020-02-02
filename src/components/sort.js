@@ -2,8 +2,7 @@ import AbstractComponent from './abstract-component.js';
 import {SortType} from "../const";
 
 const createSortTemplate = () => {
-  return (
-    `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
+  return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
       <span class="trip-sort__item  trip-sort__item--day">Day</span>
 
       <div class="trip-sort__item  trip-sort__item--event">
@@ -13,7 +12,9 @@ const createSortTemplate = () => {
           type="radio"
           name="trip-sort"
           value="sort-event"
-          checked data-sort-type="${SortType.CANCEL}"/>
+          checked
+          data-sort-type="${SortType.CANCEL}"
+        />
         <label class="trip-sort__btn" for="sort-event">Event</label>
       </div>
 
@@ -23,7 +24,9 @@ const createSortTemplate = () => {
           class="trip-sort__input  visually-hidden"
           type="radio"
           name="trip-sort"
-          value="sort-time" data-sort-type="${SortType.TIME}"/>
+          value="sort-time"
+          data-sort-type="${SortType.TIME}"
+        />
         <label class="trip-sort__btn" for="sort-time">
           Time
           <svg
@@ -45,7 +48,9 @@ const createSortTemplate = () => {
           class="trip-sort__input  visually-hidden"
           type="radio"
           name="trip-sort"
-          value="sort-price" data-sort-type="${SortType.PRICE}"/>
+          value="sort-price"
+          data-sort-type="${SortType.PRICE}"
+        />
         <label class="trip-sort__btn" for="sort-price">
           Price
           <svg
@@ -63,7 +68,7 @@ const createSortTemplate = () => {
 
       <span class="trip-sort__item  trip-sort__item--offers">Offers</span>
   </form>
-`);
+`;
 };
 
 export default class Sort extends AbstractComponent {

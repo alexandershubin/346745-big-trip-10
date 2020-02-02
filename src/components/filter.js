@@ -7,11 +7,10 @@ const getFilterNameById = (id) => {
 };
 
 const createFilterTemplate = (filters) =>{
-  return (
-    `<form class="trip-filters" action="#" method="get">
+  return `<form class="trip-filters" action="#" method="get">
     ${filters
-    .map((filter) => {
-      return `
+  .map((filter) => {
+    return `
           <div class="trip-filters__filter">
             <input
               id="filter-${filter.name}"
@@ -21,29 +20,27 @@ const createFilterTemplate = (filters) =>{
               value="${filter.name}"
               ${filter.checked && `checked`}
             />
-            <label class="trip-filters__filter-label" for="filter-
-            ${filter.name}">
+            <label class="trip-filters__filter-label" for="filter-${filter.name}">
             ${filter.name}
             </label>
           </div>
       `;
-    })
-    .join(``)}
-  
+  })
+  .join(``)}
+
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>
-`);
+  `;
 };
 
 export default class Filter extends AbstractComponent {
-  constructor(filter) {
+  constructor(filters) {
     super();
-    this._filter = filter;
-    this._element = null;
+    this._filters = filters;
   }
 
   getTemplate() {
-    return createFilterTemplate(this._filter);
+    return createFilterTemplate(this._filters);
   }
 
   setFilterChangeHandler(handler) {

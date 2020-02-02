@@ -21,9 +21,15 @@ export default class PointController {
     this._mode = mode;
     this._cardComponent = new Card(card);
     this._cardEditComponent = new FormEdit(card);
+
     this._cardComponent.setClickHandler(() => {
       this._replaceCardToEdit();
       document.addEventListener(`keydown`, this._onEscKeyDown);
+    });
+
+    this._cardEditComponent.setClickHandler(() => {
+      this._replaceEditToCard();
+      document.removeEventListener(`keydown`, this._onEscKeyDown);
     });
 
     this._cardEditComponent.setSubmitHandler((evt) => {
@@ -34,10 +40,12 @@ export default class PointController {
 
     this._cardEditComponent.setDeleteButtonClickHandler(() => this._onDataChange(card, null, this));
 
-    this._cardEditComponent.setFavoritesButtonClickHandler(() => {
+    this._cardEditComponent.setFavoriteButtonClickHandler(() => {
       const newCard = Object.assign({}, card, {isFavorite: !card.isFavorite});
+
       this._onDataChange(card, newCard, this);
     });
+
 
     switch (mode) {
       case Mode.DEFAULT:

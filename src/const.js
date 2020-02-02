@@ -60,10 +60,11 @@ export const types = [
 ];
 
 export const SortType = {
-  PRICE: `price`,
-  TIME: `time`,
-  CANCEL: `cancel`,
+  CANCEL: `date-down`,
+  TIME: `time-down`,
+  PRICE: `price-down`
 };
+
 
 export const Mode = {
   DEFAULT: `default`,
