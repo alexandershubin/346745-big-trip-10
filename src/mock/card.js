@@ -11,11 +11,18 @@ const shuffleArray = (arr) => {
   return arr;
 };
 
+export const getRandomOffers = () => shuffleArray(offers).slice(2);
+
 const getPictureLoad = () => {
   return `http://picsum.photos/300/150?r=${Math.random()}`;
 };
 
-const getRandomText = () =>
+export const getRandomPicture = () =>
+  Array(5)
+  .fill(``)
+  .map(getPictureLoad);
+
+export const getRandomText = () =>
   shuffleArray(sentences)
   .slice(0, getRandomIntegerNumber(1, 4))
   .join(` `);
@@ -70,7 +77,8 @@ export const EmptyCard = {
   photos: [],
   description: ``,
   price: 0,
-  isFavorite: false
+  isFavorite: false,
+  isNew: true
 };
 
 export const cards = generateCards(CARDS_COUNT);
